@@ -5,20 +5,20 @@ import os
 class GradVisualizer:
     def __init__(self, recorder):
         self.recorder = recorder
-        self.output_dir = "../figures"
+        self.output_dir = os.path.join(os.path.dirname(__file__), "../figures")
         os.makedirs(self.output_dir, exist_ok=True)
 
     def plot_gradient_lines(self):
-        plt.figure(figsize=(10, 6), dpi=150)
+        plt.figure(figsize=(10, 6))
         for name, values in self.recorder.history.items():
             plt.plot(values, label=name)
-        plt.xlabel('Batch Step', fontsize=16)
-        plt.ylabel('Gradient Norm', fontsize=16)
-        plt.title('Gradient Flow Over Time', fontsize=18)
-        plt.legend(fontsize=10)
+        plt.xlabel('Batch Step', fontsize=20)
+        plt.ylabel('Gradient Norm', fontsize=20)
+        plt.title('Gradient Flow Over Time', fontsize=22)
+        plt.legend(fontsize=18)
         plt.grid(True, linestyle='--', alpha=0.5)
-        plt.xticks(fontsize=14)
-        plt.yticks(fontsize=14)
+        plt.xticks(fontsize=18)
+        plt.yticks(fontsize=18)
         plt.tight_layout()
         plt.savefig(os.path.join(self.output_dir, "1.png"), dpi=300)
         plt.show()
@@ -52,14 +52,16 @@ class GradVisualizer:
             for k in keys
         ]
 
-        plt.figure(figsize=(12, max(6, 0.4 * len(keys))), dpi=200)
+        plt.figure(figsize=(10, max(6, 0.4 * len(keys))))
         im = plt.imshow(data, aspect='auto', cmap='viridis')
-        plt.colorbar(im, label='Gradient Norm', shrink=0.8)
-        plt.yticks(range(len(short_names)), short_names, fontsize=12)
-        plt.xticks(fontsize=12)
-        plt.xlabel('Step', fontsize=16)
-        plt.ylabel('Layer', fontsize=16)
-        plt.title('Gradient Heatmap', fontsize=18)
+        cbar = plt.colorbar(im)
+        cbar.set_label('Gradient Norm', fontsize=20)
+        cbar.ax.tick_params(labelsize=18)
+        plt.yticks(range(len(short_names)), short_names, fontsize=18)
+        plt.xticks(fontsize=18)
+        plt.xlabel('Step', fontsize=20)
+        plt.ylabel('Layer', fontsize=20)
+        plt.title('Gradient Heatmap', fontsize=22)
         plt.grid(False)
         plt.tight_layout()
         plt.savefig(os.path.join(self.output_dir, "2.png"), dpi=300)
